@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8"> 
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="description" content="4Q Portfolio" />
+        <meta name="keywords" content="4Q, Portfolio, Projects, Web Development" />
+        <meta name="author" content="Christian James A. Difuntorum" />
+
+        <title>Graded Task 1</title>
+        <link rel="icon" href="../assets/fish.png" sizes="30x30" type="image/png" />
+    </head>
+
+    <style>
+    body{
+        font-family: Arial;
+        margin:40px;
+    }
+
+    .container{
+        width:400px;
+    }
+
+    h2{
+        margin-bottom:20px;
+    }
+
+    input, select{
+        width:100%;
+        padding:8px;
+        margin-bottom:10px;
+    }
+
+    button{
+        padding:10px;
+        width:100%;
+        background:black;
+        color:white;
+        border:none;
+        cursor:pointer;
+    }
+
+    .star{
+        font-size:25px;
+        cursor:pointer;
+        color:gray;
+    }
+
+    .star.active{
+        color:gold;
+    }
+
+    .movie{
+        border:1px solid #ccc;
+        padding:10px;
+        margin-top:10px;
+    }
+    </style>
+
+    <body>
+
+    <div class="container">
+    <h2>Add a Movie</h2>
+
+    <label>Title:</label>
+    <input type="text" id="title">
+
+    <label>Year:</label>
+    <input type="text" id="year">
+
+    <label>Genre:</label>
+        <select id="genre">
+            <option>Action</option>
+            <option>Comedy</option>
+            <option>Drama</option>
+            <option>Horror</option>
+            <option>Sci-Fi</option>
+        </select>
+
+    <label>Rating:</label>
+    <span id="s1" class="star">★</span>
+    <span id="s2" class="star">★</span>
+    <span id="s3" class="star">★</span>
+    <span id="s4" class="star">★</span>
+    <span id="s5" class="star">★</span>
+
+    <br><br>
+    <button onclick="add()">Add Movie</button>
+
+    <h3>Movie List</h3>
+    <div id="list"></div>
+    </div>
+
+    <script>
+    let rating = 0
+
+    function rate(v) {
+        rating = v
+        for (let i = 1; i <= 5; i++) {
+            const star = document.getElementById("s" + i)
+            if (i <= rating) { star.className = "star active" } 
+            else { star.className = "star" }
+        }
+    }
+
+    document.getElementById("s1").onclick = function() { rate(1) }
+    document.getElementById("s2").onclick = function() { rate(2) }
+    document.getElementById("s3").onclick = function() { rate(3) }
+    document.getElementById("s4").onclick = function() { rate(4) }
+    document.getElementById("s5").onclick = function() { rate(5) }
+
+    function add() {
+        const t = document.getElementById("title").value
+        const y = document.getElementById("year").value
+        const g = document.getElementById("genre").value
+
+        const movie = { title: t, year: y, genre: g, rating: rating }
+
+        let movies = localStorage.getItem("movies")
+        if (movies) { movies = JSON.parse(movies) } 
+        else { movies = [] }
+
+        movies[movies.length] = movie
+        localStorage.setItem("movies", JSON.stringify(movies))
+
+        appear()
+    }
+
+    function appear() {
+        const list = document.getElementById("list")
+        list.textContent = ""
+        let movies = JSON.parse(localStorage.getItem("movies") || "[]")
+        for (let i = 0; i < movies.length; i++) {
+            const div = document.createElement("div")
+            div.className = "movie"
+            div.textContent = movies[i].title + " (" + movies[i].year + ") - " + movies[i].genre + " - Rating: " + movies[i].rating
+            list.appendChild(div)
+        }
+    }
+
+    appear()
+
+    </script>
+
+</body>
+</html>
