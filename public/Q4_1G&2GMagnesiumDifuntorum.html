@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8"> 
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="description" content="4Q Portfolio" />
+        <meta name="keywords" content="4Q, Portfolio, Projects, Web Development" />
+        <meta name="author" content="Christian James A. Difuntorum" />
+
+        <title>Graded Task 1 & 2</title>
+        <link rel="icon" href="../assets/fish.png" sizes="30x30" type="image/png" />
+    </head>
+
+    <style>
+        body{
+            font-family: 'Segoe UI', sans-serif;
+            margin:0;
+            height:100vh;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            background: linear-gradient(135deg, #667eea, #764ba2, #ff758c);
+            background-size: 300% 300%;
+            animation: gradientMove 10s ease infinite;
+        }
+
+        @keyframes gradientMove {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .container{
+            width:420px;
+            padding:25px;
+            border-radius:15px;
+            background: rgba(255,255,255,0.15);
+            backdrop-filter: blur(12px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            color:white;
+        }
+
+        h2{
+            text-align:center;
+            margin-bottom:15px;
+        }
+
+        h3{
+            margin-top:20px;
+        }
+
+        label {
+            display: block;       
+            margin-bottom: 4px;
+            font-size: 14px;
+            font-weight: bold;
+            color: white;
+        }
+
+        input, select {
+            width: 100%;          
+            padding: 10px;
+            margin-bottom: 12px;
+            border: none;
+            border-radius: 8px;
+            outline: none;
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+            box-sizing: border-box; 
+        }
+
+        input::placeholder{
+            color:#ddd;
+        }
+
+        select {
+            background: rgba(255,255,255,0.2);
+            color: white;
+        }      
+
+        option {
+            background: #c165ebdd;
+            color: white;
+        }
+
+        button{
+            padding:10px;
+            width:100%;
+            background:#ff758c;
+            color:white;
+            border:none;
+            border-radius:8px;
+            cursor:pointer;
+            font-weight:bold;
+            transition:0.3s;
+        }
+
+        button:hover{
+            background:#ff4d6d;
+            transform:scale(1.03);
+        }
+
+        .star{
+            font-size:28px;
+            cursor:pointer;
+            color:#ccc;
+            transition:0.2s;
+        }
+
+        .star:hover{
+            transform:scale(1.3);
+        }
+
+        .star.active{
+            color:gold;
+            text-shadow:0 0 10px gold;
+        }
+
+        .movie{
+            margin-top:12px;
+            padding:12px;
+            border-radius:10px;
+            background: rgba(255,255,255,0.2);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .movie button{
+            margin-top:8px;
+            background:#ff4d4d;
+        }
+
+        .movie button:hover{
+            background:#cc0000;
+        }
+    </style>
+
+    <body>
+
+    <div class="container">
+    <h2>Add a Movie</h2>
+
+    <label>Title:</label>
+    <input type="text" id="title">
+
+    <label>Year:</label>
+    <input type="text" id="year">
+
+    <label>Genre:</label>
+    <select id="genre">
+        <option>Action</option>
+        <option>Comedy</option>
+        <option>Drama</option>
+        <option>Fantasy</option>
+        <option>Horror</option>
+        <option>Romance</option>
+        <option>Sci-Fi</option>
+        <option>Thriller</option>
+    </select>
+
+    <label>Rating:</label>
+    <span id="s1" class="star">★</span>
+    <span id="s2" class="star">★</span>
+    <span id="s3" class="star">★</span>
+    <span id="s4" class="star">★</span>
+    <span id="s5" class="star">★</span>
+
+    <br><br>
+    <button onclick="add()">Add Movie</button>
+
+    <h3>Movie List</h3>
+    <div id="list"></div>
+    </div>
+
+    <script>
+    let rating = 0
+
+    function rate(ratings) {
+        rating = ratings
+        for (let i = 1; i <= 5; i++) {
+            const star = document.getElementById("s" + i)
+            if (i <= rating) { star.className = "star active" } 
+            else { star.className = "star" }
+        }
+    }
+
+    document.getElementById("s1").onclick = () => rate(1)
+    document.getElementById("s2").onclick = () => rate(2)
+    document.getElementById("s3").onclick = () => rate(3)
+    document.getElementById("s4").onclick = () => rate(4)
+    document.getElementById("s5").onclick = () => rate(5)
+
+    function add() {
+        const t = document.getElementById("title").value.trim()
+        const y = document.getElementById("year").value.trim()
+        const g = document.getElementById("genre").value
+
+        // required alert :3
+        if (t == "" || y == "" || rating == 0) {
+            alert("Please fill out everything to add your rating.")
+            return
+        }
+
+        let movies = JSON.parse(localStorage.getItem("movies") || "[]")
+
+        let found = false
+
+        for (let i = 0; i < movies.length; i++) {
+            if (movies[i].title == t) {
+                // update
+                movies[i].year = y
+                movies[i].genre = g
+                movies[i].rating = ((movies[i].rating + rating) / 2).toFixed(1)
+                found = true
+            }
+        }
+
+        if (!found) {
+            // create
+            movies.push({ title: t, year: y, genre: g, rating: rating })
+        }
+
+        localStorage.setItem("movies", JSON.stringify(movies))
+
+        appear()
+    }
+
+    function del(i) {
+        let movies = JSON.parse(localStorage.getItem("movies") || "[]")
+
+        if (confirm("Do you want to delete this movie rating?")) {
+            movies.splice(i, 1)
+            localStorage.setItem("movies", JSON.stringify(movies))
+            appear()
+        }
+    }
+
+    function appear() {
+        const list = document.getElementById("list")
+        list.innerHTML = ""
+
+        let movies = JSON.parse(localStorage.getItem("movies") || "[]")
+
+        for (let i = 0; i < movies.length; i++) {
+            const div = document.createElement("div")
+            div.className = "movie"
+
+            div.innerHTML =
+                movies[i].title + " (" + movies[i].year + ") - " +
+                movies[i].genre + " - Rating: " + movies[i].rating +
+                "<br><button onclick='del(" + i + ")'>Delete</button>"
+
+            list.appendChild(div)
+        }
+    }
+
+    appear()
+    </script>
+
+</body>
+</html>
