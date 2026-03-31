@@ -57,7 +57,8 @@
 
 - Guided Question: What changed compared to the default static positioning? Try to give different values to top and left or you can change it to bottom, right.
 
-  From the static position, the Sidebar moved down and to the right. When the value for top is changed, it moves to the bottom and when the left is changed, it moves to the right.
+  Compared to the default static position, the sidebar box moved down and to the right.
+  When the value of top is increased, the element moves down, and when the value of left is increased, it moves to the right. Aside from this, when using bottom and right properties, it can be observed that it moves the opposite as well.
 
 ### Step 2 (Fixed):
 
@@ -65,7 +66,7 @@
 
 - Guided Question: What happens when you scroll the page? Why does the footer behave differently from position relative?
   
-  When I scroll to the page, the footer remains on its original position. This is because of the CSS property, position. With the position being fixed, the item would no loger move.
+  When I scrolled the page, the footer remained in the same position on the screen. This is because of the *position: fixed property*. When this property is applied, the element stays fixed and atatched to its current position and does not move when scrolling unlike with *position: relative*.
 
 ### Step 3 (Absolute):
 
@@ -73,7 +74,7 @@
 
 - Guided Question: What is the effect of position: absolute on an element? How is it different from fixed?
 
-  Its effect made the element move relative to a nearest positioned element with position set to fixed.
+  *position: absolute* places the element relative to its nearest positioned parent. Unlike fixed, it does not stay in place when scrolling.
 
 ### Step 4 : (Absolute)
 
@@ -94,25 +95,44 @@
 
 - Guided Question: Why does the notice appear on top of the content? What happens if you swap the z‑index values?
 
-  The notice appeared on top of content because it has a higher z-index than that of content. If we swap the value of z as a value lower than of content, it would appear behind content.
+  The element notice appeared on top because it has a higher z-index than the element content. If you swap the values (make the z-index vaue for notice lower), the notice will go behind the element content.
 
 - Challenge: 
     * What changes that you have to do on the code that will position .notice box on the top right corner of the .content box? Please write the code on paper as well (both html and css on the part of .notice and .content).
+
+      (check HTML code for changes)
+
     * Try to change the position of .content to relative then to fixed. What do you observed each time?
       
-      relative - it move to the middle
+      relative:
+        - The element stays in its normal place but can be moved slightly. It may look like it shifted depending on offsets.
 
-      fixed - it returned to its original position and can't be moved when scrolled
+      fixed:
+        - The element becomes attached to the screen. It stays in place even when scrolling, and can't be moved when scrolled.
+
     * What do you observe on about the effect of z-index on .notice and .content boxes?
 
-      The z-index edits the back and forward positions of both .notice and .content boxes.
+      It can be observed that the z-index controls which element appears in front or behind.
+        - higher value = closer to the front
+        - lower value = pushed behind
 
 3. Please answer the following reflection questions (15 minutes)
 
     a. Could you summarize the differences between the CSS position values (static, relative, absolute, fixed)? 
 
+      - static: elements follow normal positioning
+      - relative: elements follow normal positioning but can be moved relative to its original position using the four directions
+      - absolute: element is removed from its normal position and is positioned relative to its nearest positioned ancestor (or to the page) instead
+      - fixed: element is positioned relative to the page, and stays in the same position when scrolling
+
     b. How does absolute positioning depend on its parent element?
 
+      - This position style looks for the nearest parent with a position other than static. If there is a parent element, the element with this position style will position itself inside the parent, otherwise it will position itself relative to the page.
+
     c. How do you differentiate sticky from fixed (you can research on sticky)?
+    
+      - fixed: always in the same position regardless of scrolling
+      - sticky: acts relative but sticks in place after scrolling for a while
 
     d. If you were designing a webpage for a school event, how might you use positioning to highlight important information? Please give concrete examples.
+      - If it's going to be used on a school event webpage, the navigation bar would be fixed for easier navigation and visibility. I would also use the sticky style to ensure announcements stay visible while scrolling. Lastly, I will use z-index to layer my design and to ensure important elements appear above the other contents.
